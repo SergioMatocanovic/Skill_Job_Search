@@ -34,18 +34,18 @@ All generated files go under a fixed folder in the user's home directory, `~/.jo
 
 Create this folder the first time it's needed. Never ask the user to manage these paths themselves, just use them.
 
-## Step 1 — Collect the resume
+## Step 1: Collect the resume
 
 Ask the user to share their resume or CV, pasted as text or uploaded as a file.
 
-## Step 2 — Understand what they're looking for
+## Step 2: Understand what they're looking for
 
 After reading the resume:
 1. Identify their background, skills, and experience level.
 2. Suggest 2 to 4 role categories that fit that profile.
 3. Ask them to confirm or redirect: are these the right roles, or do they already have something specific in mind?
 
-## Step 3 — Tailor the resume
+## Step 3: Tailor the resume
 
 Once the target role is clear, rewrite the resume so it:
 - Leads with the experience and skills most relevant to that role
@@ -55,7 +55,7 @@ Once the target role is clear, rewrite the resume so it:
 
 Build it as a `.docx` using `scripts/generate_docx.py` (see "Generating documents" below), save it to `~/.job-search-assistant/resumes/<company>-<role>/resume.docx`, and share that file with the user. Then ask if they want changes before moving on to the job search.
 
-## Step 4 — Search for job opportunities
+## Step 4: Search for job opportunities
 
 Search the web (LinkedIn, Indeed, Glassdoor, company career pages, etc.) for open roles matching the target profile.
 
@@ -66,7 +66,7 @@ For each match, present:
 - A short note on why it's a good fit, or where it falls short if the score is low
 - A direct link, if one exists
 
-## Step 5 — Offer a cover letter per job
+## Step 5: Offer a cover letter per job
 
 For each opportunity, ask if they want a cover letter for it. If yes, write one that:
 - Is specific to that job and company, not a template
@@ -75,7 +75,7 @@ For each opportunity, ask if they want a cover letter for it. If yes, write one 
 
 Build it as a `.docx` with `scripts/generate_docx.py`, save it to `~/.job-search-assistant/resumes/<company>-<role>/cover-letter.docx`, and share it.
 
-## Step 6 — Keep the dashboard updated
+## Step 6: Keep the dashboard updated
 
 Every time a resume and/or cover letter gets generated for a job (meaning the user applied to it through this skill), record it automatically. Don't wait to be asked.
 
