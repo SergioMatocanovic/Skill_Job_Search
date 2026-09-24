@@ -1,0 +1,16 @@
+{
+  "name": "Skill_Job_Search",
+  "description": "Free plugin that tailors resumes and cover letters, matches you to open roles, and tracks applications locally.",
+  "owner": {
+    "name": "Sergio Matocanovic",
+    "url": "https://github.com/SergioMatocanovic"
+  },
+  "plugins": [
+    {
+      "name": "job-search-assistant",
+      "source": "./",
+      "description": "Tailors resumes and cover letters, matches you to open roles, and tracks your applications in a local dashboard.",
+      "category": "career"
+    }
+  ]
+}
