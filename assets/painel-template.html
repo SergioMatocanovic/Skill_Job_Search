@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<title>Painel de vagas</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,wght@0,400;0,500;0,600;1,400&family=IBM+Plex+Mono:wght@400;500&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#F7F3EA;
+    --paper-raised:#FFFFFF;
+    --ink:#22282F;
+    --ink-soft:#5B6570;
+    --ink-faint:#9AA0A6;
+    --line:#DCD4C2;
+    --rust:#B5502F;
+    --rust-soft:#EFDCCF;
+    --teal:#2F5D53;
+    --teal-soft:#DCE9E4;
+    --amber:#B8862F;
+    --amber-soft:#F1E3C6;
+    --gray-soft:#E9E4D6;
+    --radius:10px;
+  }
+  @media (prefers-color-scheme: dark){
+    :root{
+      --paper:#1B1E22;
+      --paper-raised:#24282D;
+      --ink:#EDEAE2;
+      --ink-soft:#B3ADA0;
+      --ink-faint:#7A756A;
+      --line:#3A3B36;
+      --rust:#E08A63;
+      --rust-soft:#3B2B22;
+      --teal:#7FBFA9;
+      --teal-soft:#1E332C;
+      --amber:#E0BA6E;
+      --amber-soft:#3A2F1A;
+      --gray-soft:#2C2E2A;
+    }
+  }
+  *{box-sizing:border-box;}
+  body{margin:0;}
+  .wrap{
+    background:var(--paper);
+    color:var(--ink);
+    font-family:'Inter',sans-serif;
+    padding:2rem;
+    min-height:100vh;
+  }
+  .masthead{
+    display:flex;
+    justify-content:space-between;
+    align-items:flex-end;
+    border-bottom:2px solid var(--ink);
+    padding-bottom:1rem;
+    margin-bottom:1.75rem;
+    flex-wrap:wrap;
+    gap:1rem;
+  }
+  .masthead h1{
+    font-family:'Newsreader',serif;
+    font-weight:600;
+    font-size:28px;
+    margin:0;
+    letter-spacing:-0.01em;
+  }
+  .masthead .sub{
+    font-size:13px;
+    color:var(--ink-soft);
+    margin-top:4px;
+    font-style:italic;
+    font-family:'Newsreader',serif;
+  }
+  .date-stamp{
+    font-family:'IBM Plex Mono',monospace;
+    font-size:12px;
+    color:var(--ink-faint);
+    text-transform:uppercase;
+    letter-spacing:0.06em;
+  }
+  .stats{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(150px,1fr));
+    gap:1px;
+    background:var(--line);
+    border:1px solid var(--line);
+    margin-bottom:2rem;
+  }
+  .stat{
+    background:var(--paper-raised);
+    padding:1.1rem 1.2rem;
+  }
+  .stat .label{
+    font-size:11px;
+    text-transform:uppercase;
+    letter-spacing:0.08em;
+    color:var(--ink-soft);
+    margin-bottom:8px;
+  }
+  .stat .value{
+    font-family:'IBM Plex Mono',monospace;
+    font-size:28px;
+    font-weight:500;
+  }
+  .stat.rust .value{color:var(--rust);}
+  .stat.teal .value{color:var(--teal);}
+  .stat.amber .value{color:var(--amber);}
+  .section-title{
+    font-family:'Newsreader',serif;
+    font-size:17px;
+    font-weight:600;
+    margin:0 0 0.9rem;
+    display:flex;
+    align-items:center;
+    gap:10px;
+  }
+  .section-title::after{
+    content:'';
+    flex:1;
+    height:1px;
+    background:var(--line);
+  }
+  .note{
+    font-size:12px;
+    color:var(--ink-faint);
+    margin:-0.6rem 0 1.4rem;
+    font-style:italic;
+    font-family:'Newsreader',serif;
+  }
+  table{
+    width:100%;
+    border-collapse:collapse;
+    font-size:13px;
+  }
+  thead th{
+    text-align:left;
+    font-family:'IBM Plex Mono',monospace;
+    font-size:11px;
+    text-transform:uppercase;
+    letter-spacing:0.05em;
+    color:var(--ink-soft);
+    font-weight:500;
+    padding:0 10px 8px;
+    border-bottom:1px solid var(--ink);
+  }
+  tbody td{
+    padding:10px 10px;
+    border-bottom:1px solid var(--line);
+    vertical-align:top;
+  }
+  tbody tr:hover{background:rgba(0,0,0,0.015);}
+  .cargo{font-weight:600;}
+  .empresa{color:var(--ink-soft); font-size:12px;}
+  .data-cell{font-family:'IBM Plex Mono',monospace; font-size:12px; color:var(--ink-soft);}
+  .score-pill{
+    font-family:'IBM Plex Mono',monospace;
+    font-size:12px;
+    font-weight:500;
+    padding:2px 8px;
+    border-radius:20px;
+    display:inline-block;
+  }
+  .score-high{background:var(--teal-soft); color:var(--teal);}
+  .score-mid{background:var(--amber-soft); color:var(--amber);}
+  .score-low{background:var(--rust-soft); color:var(--rust);}
+  .status-pill{
+    font-size:12px;
+    padding:3px 9px;
+    border-radius:20px;
+    background:var(--gray-soft);
+    color:var(--ink-soft);
+    display:inline-block;
+  }
+  .comentario{color:var(--ink-soft); font-size:12px;}
+  .trail{
+    display:flex;
+    gap:4px;
+    margin-top:6px;
+  }
+  .trail .dot{
+    width:7px;
+    height:7px;
+    border-radius:50%;
+    background:var(--gray-soft);
+  }
+  .trail .dot.on{background:var(--teal);}
+  .trail .dot.off-neg{background:var(--rust);}
+  .link-cell a{
+    color:var(--rust);
+    text-decoration:none;
+    font-size:12px;
+  }
+  .link-cell a:hover{text-decoration:underline;}
+  .empty{
+    padding:2.5rem;
+    text-align:center;
+    color:var(--ink-soft);
+    font-family:'Newsreader',serif;
+    font-style:italic;
+    font-size:15px;
+    border:1px dashed var(--line);
+    border-radius:8px;
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="masthead">
+    <div>
+      <h1>Painel de candidaturas</h1>
+      <div class="sub">seu registro pessoal de vagas aplicadas</div>
+    </div>
+    <div class="date-stamp" id="today"></div>
+  </div>
+
+  <div class="stats" id="stats"></div>
+
+  <div class="section-title">Candidaturas</div>
+  <div class="note">Gerado pela skill Job Search Assistant. Para atualizar, marcar status ou adicionar um comentário, peça ao Claude.</div>
+  <table id="tabela" style="display:none;">
+    <thead>
+      <tr>
+        <th style="width:26%;">Vaga</th>
+        <th style="width:11%;">Data</th>
+        <th style="width:9%;">Match</th>
+        <th style="width:16%;">Status</th>
+        <th style="width:28%;">Comentário</th>
+        <th style="width:10%;">Link</th>
+      </tr>
+    </thead>
+    <tbody id="tbody"></tbody>
+  </table>
+  <div class="empty" id="empty-msg" style="display:none;">Nenhuma candidatura registrada ainda.</div>
+
+</div>
+
+<script>
+const VAGAS = __VAGAS_JSON__;
+
+const STATUS_STAGE = {
+  'Aplicado':1, 'Sem resposta':1, 'Resposta recebida':2, 'Entrevista':3, 'Oferta':4, 'Recusado':-1
+};
+
+document.getElementById('today').textContent = new Date().toLocaleDateString('pt-BR', {day:'2-digit', month:'short', year:'numeric'}).toUpperCase();
+
+function scoreClass(score){
+  if(score >= 70) return 'score-high';
+  if(score >= 40) return 'score-mid';
+  return 'score-low';
+}
+
+function trailHTML(status){
+  const stage = STATUS_STAGE[status] || 0;
+  let dots = '';
+  for(let i=1;i<=4;i++){
+    let cls = 'dot';
+    if(stage === -1 && i===1) cls += ' off-neg';
+    else if(stage >= i) cls += ' on';
+    dots += `<span class="${cls}"></span>`;
+  }
+  return `<div class="trail">${dots}</div>`;
+}
+
+function escapeHTML(str){
+  const div = document.createElement('div');
+  div.textContent = str || '';
+  return div.innerHTML;
+}
+function escapeAttr(str){
+  return (str||'').replace(/"/g,'&quot;');
+}
+
+function render(){
+  const vagas = VAGAS;
+  const total = vagas.length;
+  const comResposta = vagas.filter(v => ['Resposta recebida','Entrevista','Oferta'].includes(v.status)).length;
+  const semResposta = vagas.filter(v => v.status === 'Sem resposta' || v.status === 'Aplicado').length;
+  const avgScore = total ? Math.round(vagas.reduce((s,v)=>s+(Number(v.score)||0),0)/total) : 0;
+
+  document.getElementById('stats').innerHTML = `
+    <div class="stat">
+      <div class="label">Total aplicadas</div>
+      <div class="value">${total}</div>
+    </div>
+    <div class="stat teal">
+      <div class="label">Com resposta</div>
+      <div class="value">${comResposta}</div>
+    </div>
+    <div class="stat rust">
+      <div class="label">Sem resposta</div>
+      <div class="value">${semResposta}</div>
+    </div>
+    <div class="stat amber">
+      <div class="label">Score médio de match</div>
+      <div class="value">${avgScore}</div>
+    </div>
+  `;
+
+  const tbody = document.getElementById('tbody');
+  const table = document.getElementById('tabela');
+  const emptyMsg = document.getElementById('empty-msg');
+
+  if(total === 0){
+    table.style.display = 'none';
+    emptyMsg.style.display = 'block';
+    return;
+  }
+  table.style.display = 'table';
+  emptyMsg.style.display = 'none';
+
+  const sorted = [...vagas].sort((a,b) => (b.data||'').localeCompare(a.data||''));
+
+  tbody.innerHTML = sorted.map(v => {
+    const dataFmt = v.data ? new Date(v.data + 'T00:00:00').toLocaleDateString('pt-BR') : '-';
+    return `
+    <tr>
+      <td>
+        <div class="cargo">${escapeHTML(v.cargo)}</div>
+        <div class="empresa">${escapeHTML(v.empresa)}</div>
+        ${trailHTML(v.status)}
+      </td>
+      <td class="data-cell">${dataFmt}</td>
+      <td><span class="score-pill ${scoreClass(Number(v.score)||0)}">${v.score || 0}</span></td>
+      <td><span class="status-pill">${escapeHTML(v.status || 'Aplicado')}</span></td>
+      <td class="comentario">${escapeHTML(v.comentario||'')}</td>
+      <td class="link-cell">${v.link ? `<a href="${escapeAttr(v.link)}" target="_blank" rel="noopener">Ver vaga</a>` : '-'}</td>
+    </tr>
+    `;
+  }).join('');
+}
+
+render();
+</script>
+</body>
+</html>
