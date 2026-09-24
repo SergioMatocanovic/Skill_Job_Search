@@ -1,6 +1,6 @@
 {
   "name": "job-search-assistant",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Tailors resumes and cover letters, matches you to open roles, and tracks your applications in a local dashboard. Free and open source.",
   "author": {
     "name": "Sergio Matocanovic",
